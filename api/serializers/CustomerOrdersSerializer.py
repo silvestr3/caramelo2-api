@@ -1,14 +1,12 @@
 from rest_framework import serializers
-from api.models import Order, AdditionalFee
-from .AdditionalFeeSerializer import AdditionalFeeSerializer
+from api.models import Order
 from .BikeSerializer import BikeSerializer
+from .AdditionalFeeSerializer import AdditionalFeeSerializer
 
-
-class OrderSerializer(serializers.ModelSerializer):
-    customer = serializers.ReadOnlyField(source='customer.name')
+class CustomerOrdersSerializer(serializers.ModelSerializer):
     bikes = BikeSerializer(many=True, read_only=True)
     additional_fees = AdditionalFeeSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ['id', 'sale_date', 'bikes', 'total_price', 'additional_fees']
