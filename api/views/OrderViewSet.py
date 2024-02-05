@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 class OrderViewSet(viewsets.ModelViewSet):
     """Listing all registered Sales"""
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().order_by('-id')
     serializer_class = OrderSerializer
 
     def create(self, request):
@@ -29,7 +29,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         )
 
         for bike in request.data['bikes']:
-            instance = Bike.objects.filter(pk=bike)[0]
+            instance = Bike.objects.filter(pk=bike['id'])[0]
             instance.sold = True
             instance.save()
             new_order.bikes.add(instance)
