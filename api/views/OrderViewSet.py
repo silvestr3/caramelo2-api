@@ -10,6 +10,25 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all().order_by('-id')
     serializer_class = OrderSerializer
 
+    def destroy(self, request, *args, **kwargs):
+        try:
+            order_to_delete = Order.objects.get(pk=kwargs['pk'])
+        except:
+            return Response(status=404)
+
+        for bike in order_to_delete.bikes.all():
+            bike.sold = False
+            bike.save()
+
+        for fee in order_to_delete.additional_fees.all():
+            fee.delete()
+        
+        try:
+            order_to_delete.delete()
+            return Response({'status': 'success', 'message': 'order deleted successfully'}, status=200)
+        except Exception as e:
+            return Response({'status': 'error', 'message': str(e)}, status=404)
+
     def create(self, request):
         customer = Customer.objects.filter(pk=request.data["customer"])[0]
 
