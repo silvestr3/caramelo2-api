@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from api.serializers import OrderSerializer
 from api.models import Order, Customer, Bike, AdditionalFee
 from django.utils.timezone import datetime
@@ -65,3 +66,10 @@ class OrderViewSet(viewsets.ModelViewSet):
         new_order.save()
 
         return Response({"success": True, "message": "order placed successfully"})
+    
+    @action(methods=['GET'], detail=False)
+    def latest(self, request):
+        queryset = self.get_queryset()[:6]
+        serializer = OrderSerializer(queryset, many=True)
+
+        return Response(serializer.data)
