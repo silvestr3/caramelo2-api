@@ -11,6 +11,39 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all().order_by('-id')
     serializer_class = OrderSerializer
 
+    def update(self, request, *args, **kwargs):
+        order_to_edit = Order.objects.get(pk=kwargs['pk'])
+        
+        #editing single fields
+        order_to_edit.notes = request.data['notes']
+        order_to_edit.payment_method = request.data['paymentMethod']
+        order_to_edit.discount = request.data['discount']
+        order_to_edit.down_payment = request.data['downPayment']
+        order_to_edit.total = request.data['total']
+        order_to_edit.total_price = request.data['total']
+
+        #editing bike price
+        bike_to_edit = order_to_edit.bikes.all()[0]
+        bike_to_edit.sale_price = request.data['bikePrice']
+        bike_to_edit.save()
+
+        #editing additional fees
+        for old_fee in order_to_edit.additional_fees.all():
+            order_to_edit.additional_fees.remove(old_fee)
+            old_fee.delete()
+
+        for new_fee in request.data['additionalFees']:
+            create_fee = AdditionalFee.objects.create(
+                description=new_fee['description'],
+                amount=new_fee['amount']
+            )
+            order_to_edit.additional_fees.add(create_fee)
+            create_fee.save()
+
+        order_to_edit.save()
+        return Response({'message': 'order edited!'}, status=200)
+
+
     def destroy(self, request, *args, **kwargs):
         try:
             order_to_delete = Order.objects.get(pk=kwargs['pk'])
@@ -29,6 +62,7 @@ class OrderViewSet(viewsets.ModelViewSet):
             return Response({'status': 'success', 'message': 'order deleted successfully'}, status=200)
         except Exception as e:
             return Response({'status': 'error', 'message': str(e)}, status=404)
+
 
     def create(self, request):
         customer = Customer.objects.filter(pk=request.data["customer"])[0]
