@@ -3,13 +3,24 @@ from rest_framework.decorators import action
 from api.serializers import OrderSerializer
 from api.models import Order, Customer, Bike, AdditionalFee
 from django.utils.timezone import datetime
+from django.shortcuts import get_object_or_404
 
 from rest_framework.response import Response
 
 class OrderViewSet(viewsets.ModelViewSet):
     """Listing all registered Sales"""
-    queryset = Order.objects.all().order_by('-id')
     serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        queryset = Order.objects.all().order_by('-id')
+        customer = self.request.query_params.get('customer')
+
+        if customer is not None:
+            filtercustomer = get_object_or_404(Customer, pk=customer)
+            queryset = queryset.filter(customer=filtercustomer)
+
+        return queryset
+    
 
     def update(self, request, *args, **kwargs):
         order_to_edit = Order.objects.get(pk=kwargs['pk'])
