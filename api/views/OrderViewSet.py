@@ -4,7 +4,6 @@ from api.serializers import OrderSerializer
 from api.models import Order, Customer, Bike, AdditionalFee
 from django.utils.timezone import datetime
 from django.shortcuts import get_object_or_404
-
 from rest_framework.response import Response
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -13,11 +12,17 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Order.objects.all().order_by('-id')
+        
         customer = self.request.query_params.get('customer')
-
+        startDate = self.request.query_params.get('startDate')
+        endDate = self.request.query_params.get('endDate')
+        
         if customer is not None:
             filtercustomer = get_object_or_404(Customer, pk=customer)
             queryset = queryset.filter(customer=filtercustomer)
+        if startDate is not None and endDate is not None:
+            queryset = queryset.filter(sale_date__range=[startDate, endDate])
+            
 
         return queryset
     
