@@ -1,7 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from api.serializers import OrderSerializer
+from api.serializers import OrderSerializer, CustomerSerializer
 from api.models import Order, Customer, Bike, AdditionalFee
+from api.util import convert_number
 from django.utils.timezone import datetime
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
@@ -123,3 +124,19 @@ class OrderViewSet(viewsets.ModelViewSet):
         serializer = OrderSerializer(queryset, many=True)
 
         return Response(serializer.data)
+
+
+    @action(methods=['GET'], detail=True)
+    def receipt(self, request, *args, **kwargs):
+        order = self.get_object()
+        customer = order.customer
+
+        serialized_order = OrderSerializer(order, many=False)
+        serialized_customer = CustomerSerializer(customer, many=False)
+        value_text = convert_number(order.total)
+
+        return Response({
+            'customer': serialized_customer.data, 
+            'order': serialized_order.data, 
+            'amount_text': value_text
+        })
