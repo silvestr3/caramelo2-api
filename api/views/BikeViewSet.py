@@ -14,7 +14,7 @@ class BikeViewSet(viewsets.ModelViewSet):
 
         if storage_id is not None:
             filterStorage = get_object_or_404(Storage, pk=storage_id)
-            queryset = queryset.filter(storage_place=filterStorage)
+            queryset = queryset.filter(storage_place=filterStorage).filter(sold=False)
 
         return queryset
     
