@@ -120,7 +120,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     
     @action(methods=['GET'], detail=False)
     def latest(self, request):
-        queryset = self.get_queryset()[:6]
+        queryset = self.get_queryset()[:4]
         serializer = OrderSerializer(queryset, many=True)
 
         return Response(serializer.data)
