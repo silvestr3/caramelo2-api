@@ -29,6 +29,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     
 
     def update(self, request, *args, **kwargs):
+        """Edit order"""
         order_to_edit = Order.objects.get(pk=kwargs['pk'])
         
         #editing single fields
@@ -62,6 +63,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 
     def destroy(self, request, *args, **kwargs):
+        """Delete order"""
         try:
             order_to_delete = Order.objects.get(pk=kwargs['pk'])
         except:
@@ -82,6 +84,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 
     def create(self, request):
+        """Place order"""
         customer = Customer.objects.filter(pk=request.data["customer"])[0]
 
         new_order = Order.objects.create(
@@ -120,6 +123,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     
     @action(methods=['GET'], detail=False)
     def latest(self, request):
+        """Return 4 last sales"""
         queryset = self.get_queryset()[:4]
         serializer = OrderSerializer(queryset, many=True)
 
@@ -128,6 +132,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     @action(methods=['GET'], detail=True)
     def receipt(self, request, *args, **kwargs):
+        """Returns sale receipt data"""
         order = self.get_object()
         customer = order.customer
 
