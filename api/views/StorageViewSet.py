@@ -5,13 +5,21 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+
 class StorageViewSet(viewsets.ModelViewSet):
     """Listing all registered Storages"""
     queryset = Storage.objects.all().order_by('-id')
     serializer_class = StorageSerializer
 
     def destroy(self, request, *args, **kwargs):
-        return Response({'not implemented'})
+        storageBikes = Bike.objects.filter(storage_place=self.get_object())
+
+        if len(storageBikes) > 0:
+            return Response({'success': False, 'message': 'Transfer products out of this storage before deleting it!'}, status=401)
+        else:
+            storageDelete = self.get_object()
+            storageDelete.delete()
+            return Response({'success': True, 'message': 'storage deleted successfully'})
 
     @action(methods=['POST'], detail=False)
     def transfer(self, request):
@@ -38,7 +46,7 @@ class StorageViewSet(viewsets.ModelViewSet):
                 transferInstance.bikes.add(bike)
             except Bike.DoesNotExist:
                 errors.append(bikeId)
-        
+
         transferInstance.save()
 
-        return Response({'message':'Products transferred successfully', 'errors': errors})
+        return Response({'message': 'Products transferred successfully', 'errors': errors})
