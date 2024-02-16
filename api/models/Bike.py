@@ -32,8 +32,8 @@ class Bike(models.Model):
 
     storage_place = models.ForeignKey(Storage, on_delete=models.SET_NULL, null=True)
 
-    # invoice_number = models.CharField(max_length=100, default='', blank=True, null=True)
-    # invoice_picture = models.ImageField(upload_to='invoices/%Y/%m/', blank=True, null=True)
+    invoice_number = models.CharField(max_length=100, default='', blank=True, null=True)
+    invoice_picture = models.ImageField(upload_to='invoices/%Y/%m/', blank=True, null=True)
 
     def __str__(self) -> str:
         return self.model_name
