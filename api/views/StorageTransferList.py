@@ -4,7 +4,7 @@ from api.models import StorageTransfer
 
 
 class StorageTransferList(generics.ListAPIView):
-    """Listings all orders from given user"""
+    """Listings Storage transfer history"""
     serializer_class = StorageTransferSerializer
     http_method_names = ['get']
 
