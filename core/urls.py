@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from api.views import CustomerViewSet, BikeViewSet, StorageViewSet, OrderViewSet, CustomerOrdersList, StorageTransferList
+from api.views import CustomerViewSet, UsersViewset, BikeViewSet, StorageViewSet, OrderViewSet, CustomerOrdersList, StorageTransferList
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -12,6 +12,7 @@ router.register('customers', CustomerViewSet, basename="Customers")
 router.register('inventory', BikeViewSet, basename="Inventory")
 router.register('storage', StorageViewSet, basename="Storage")
 router.register('order', OrderViewSet, basename="Order")
+router.register('employees', UsersViewset, basename="Employees")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
