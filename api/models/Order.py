@@ -2,7 +2,7 @@ from django.db import models
 from .Customer import Customer
 from .Bike import Bike
 from .AdditionalFee import AdditionalFee
-from django.contrib.auth.models import User
+from .User import User
 
 class Order(models.Model):
     STATUS = [
