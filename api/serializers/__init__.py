@@ -5,3 +5,4 @@ from .OrderSerializer import OrderSerializer
 from .CustomerOrdersSerializer import CustomerOrdersSerializer
 from .AdditionalFeeSerializer import AdditionalFeeSerializer
 from .StorageTransferSerializer import StorageTransferSerializer
+from .CustomTokenObtainPairSerializer import CustomTokenObtainPairSerializer
