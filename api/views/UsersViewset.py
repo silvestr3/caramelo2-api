@@ -24,3 +24,24 @@ class UsersViewset(viewsets.ModelViewSet):
         serializer = UserSerializer(newUser)
 
         return Response({'success': True, 'new_user': serializer.data})
+
+    def update(self, request, **kwargs):
+        name = request.data['name']
+        username = request.data['username']
+        password = request.data['password']
+        role = request.data['role']
+
+        userToEdit = User.objects.get(pk=kwargs['pk'])
+        
+        userToEdit.name = name
+        userToEdit.username = username
+        userToEdit.role = role
+
+        if password != "":
+            userToEdit.set_password(password)
+        
+        userToEdit.save()
+
+        serializer = UserSerializer(userToEdit)
+
+        return Response({'success': True, 'edit_user': serializer.data})
