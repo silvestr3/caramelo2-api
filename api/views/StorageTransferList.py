@@ -1,12 +1,14 @@
 from rest_framework import generics
 from api.serializers import StorageTransferSerializer
 from api.models import StorageTransfer
+from rest_framework.permissions import IsAuthenticated
 
 
 class StorageTransferList(generics.ListAPIView):
     """Listings Storage transfer history"""
     serializer_class = StorageTransferSerializer
     http_method_names = ['get']
+    permission_classes = [IsAuthenticated]
 
 
     def get_queryset(self):

@@ -6,10 +6,12 @@ from api.util import convert_number
 from django.utils.timezone import datetime
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 class OrderViewSet(viewsets.ModelViewSet):
     """Listing all registered Sales"""
     serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = Order.objects.all().order_by('-id')

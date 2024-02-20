@@ -2,10 +2,12 @@ from rest_framework import generics, viewsets
 from api.serializers import UserSerializer
 from api.models import User
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 class UsersViewset(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
     
     def create(self, request):
         name = request.data['name']

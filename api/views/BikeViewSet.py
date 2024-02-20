@@ -5,10 +5,12 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from datetime import date
+from rest_framework.permissions import IsAuthenticated
 
 class BikeViewSet(viewsets.ModelViewSet):
     """Listing all registered bikes in stock"""
     serializer_class = BikeSerializer
+    permission_classes = [IsAuthenticated, ]
     
     def get_queryset(self):
         queryset = Bike.objects.all().order_by('-id')

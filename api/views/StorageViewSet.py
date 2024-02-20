@@ -4,12 +4,14 @@ from api.models import Storage, Bike, StorageTransfer
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 
 class StorageViewSet(viewsets.ModelViewSet):
     """Listing all registered Storages"""
     queryset = Storage.objects.all().order_by('-id')
     serializer_class = StorageSerializer
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         storageBikes = Bike.objects.filter(storage_place=self.get_object())
