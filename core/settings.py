@@ -17,7 +17,7 @@ import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-CORS_ALLOWED_ORIGINS = [os.environ.get('CORS_ALLOWED_HOSTS').split(',')]
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_HOSTS').split(',')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS').split(',')]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
 
 # Application definition
 
