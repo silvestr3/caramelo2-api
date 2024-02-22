@@ -102,7 +102,7 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.parse("postgres://default:FmeUCPNlO72y@ep-red-darkness-a1apukvs.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require")
+DATABASES['default'] = dj_database_url.parse(os.environ.get("DATABASE_URL"))
 
 
 # Password validation
