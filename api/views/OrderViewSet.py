@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 class OrderViewSet(viewsets.ModelViewSet):
     """Listing all registered Sales"""
     serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = Order.objects.all().order_by('-id')

@@ -7,5 +7,5 @@ class CustomerViewSet(viewsets.ModelViewSet):
     """Listing all registered customers"""
     queryset = Customer.objects.all().order_by('-id')
     serializer_class = CustomerSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 

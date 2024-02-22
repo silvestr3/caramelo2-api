@@ -11,7 +11,7 @@ class StorageViewSet(viewsets.ModelViewSet):
     """Listing all registered Storages"""
     queryset = Storage.objects.all().order_by('-id')
     serializer_class = StorageSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         storageBikes = Bike.objects.filter(storage_place=self.get_object())

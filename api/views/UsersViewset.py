@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 class UsersViewset(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     def create(self, request):
         name = request.data['name']

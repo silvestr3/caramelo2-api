@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 class BikeViewSet(viewsets.ModelViewSet):
     """Listing all registered bikes in stock"""
     serializer_class = BikeSerializer
-    permission_classes = [IsAuthenticated, ]
+    # permission_classes = [IsAuthenticated, ]
     
     def get_queryset(self):
         queryset = Bike.objects.all().order_by('-id')

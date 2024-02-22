@@ -8,7 +8,7 @@ class StorageTransferList(generics.ListAPIView):
     """Listings Storage transfer history"""
     serializer_class = StorageTransferSerializer
     http_method_names = ['get']
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
 
     def get_queryset(self):
