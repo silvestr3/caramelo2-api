@@ -19,12 +19,15 @@ class OrderViewSet(viewsets.ModelViewSet):
         customer = self.request.query_params.get('customer')
         startDate = self.request.query_params.get('startDate')
         endDate = self.request.query_params.get('endDate')
+        bike = self.request.query_params.get('bike')
         
         if customer is not None:
             filtercustomer = get_object_or_404(Customer, pk=customer)
             queryset = queryset.filter(customer=filtercustomer)
         if startDate is not None and endDate is not None:
             queryset = queryset.filter(sale_date__range=[startDate, endDate])
+        if bike is not None:
+            queryset = queryset.filter(bikes__id=bike)
             
 
         return queryset
