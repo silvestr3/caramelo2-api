@@ -16,10 +16,14 @@ class StorageTransferList(generics.ListAPIView):
         
         startDate = self.request.query_params.get('startDate')
         endDate = self.request.query_params.get('endDate')
+
+        itemId = self.request.query_params.get('id')
         
         if startDate is not None and endDate is not None:
             queryset = queryset.filter(transfer_date__range=[startDate, endDate])
             
+        if itemId is not None:
+            queryset = queryset.filter(id=itemId)
 
         return queryset
     
