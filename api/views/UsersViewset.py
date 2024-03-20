@@ -15,17 +15,20 @@ class UsersViewset(viewsets.ModelViewSet):
         password = request.data['password']
         role = request.data['role']
 
-        newUser = User.objects.create(
-            name=name,
-            username=username,
-            role=role
-        )
+        try:
+            newUser = User.objects.create(
+                name=name,
+                username=username,
+                role=role
+            )
 
-        newUser.set_password(password)
-        newUser.save()
-        serializer = UserSerializer(newUser)
+            newUser.set_password(password)
+            newUser.save()
+            serializer = UserSerializer(newUser)
 
-        return Response({'success': True, 'new_user': serializer.data})
+            return Response({'success': True, 'new_user': serializer.data})
+        except:
+            return Response({'success': False, 'message': "username already exists"}, status=400)
 
     def update(self, request, **kwargs):
         name = request.data['name']
