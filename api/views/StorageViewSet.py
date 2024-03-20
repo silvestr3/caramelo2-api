@@ -17,7 +17,7 @@ class StorageViewSet(viewsets.ModelViewSet):
         storageBikes = Bike.objects.filter(storage_place=self.get_object())
 
         if len(storageBikes) > 0:
-            return Response({'success': False, 'message': 'Transfer products out of this storage before deleting it!'}, status=401)
+            return Response({'success': False, 'message': 'Transfer products out of this storage before deleting it!'}, status=400)
         else:
             storageDelete = self.get_object()
             storageDelete.delete()
@@ -51,4 +51,4 @@ class StorageViewSet(viewsets.ModelViewSet):
 
         transferInstance.save()
 
-        return Response({'message': 'Products transferred successfully', 'errors': errors})
+        return Response({'message': 'Products transferred successfully', 'errors': errors, 'data':transferInstance.id})
