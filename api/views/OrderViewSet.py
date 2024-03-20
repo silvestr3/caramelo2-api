@@ -36,18 +36,20 @@ class OrderViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         """Edit order"""
         order_to_edit = Order.objects.get(pk=kwargs['pk'])
+
+        new_total = 0
         
         #editing single fields
         order_to_edit.notes = request.data['notes']
         order_to_edit.payment_method = request.data['paymentMethod']
         order_to_edit.discount = request.data['discount']
         order_to_edit.down_payment = request.data['downPayment']
-        order_to_edit.total = request.data['total']
-        order_to_edit.total_price = request.data['total']
 
         #editing bike price
         bike_to_edit = order_to_edit.bikes.all()[0]
         bike_to_edit.sale_price = request.data['bikePrice']
+
+        new_total += float(bike_to_edit.sale_price)
         bike_to_edit.save()
 
         #editing additional fees
@@ -61,7 +63,14 @@ class OrderViewSet(viewsets.ModelViewSet):
                 amount=new_fee['amount']
             )
             order_to_edit.additional_fees.add(create_fee)
+
+            new_total += float(create_fee.amount)
             create_fee.save()
+
+        new_total = new_total - float(order_to_edit.discount)
+
+        order_to_edit.total = new_total
+        order_to_edit.total_price = new_total
 
         order_to_edit.save()
         return Response({'message': 'order edited!'}, status=200)
@@ -124,7 +133,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         
         new_order.save()
 
-        return Response({"success": True, "message": "order placed successfully"})
+        return Response({"success": True, "data": new_order.id})
     
     @action(methods=['GET'], detail=False)
     def latest(self, request):
