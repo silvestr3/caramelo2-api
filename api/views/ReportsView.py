@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.db.models.functions import ExtractMonth, ExtractYear
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, F
 from calendar import month_name
 from rest_framework.permissions import IsAuthenticated
 
@@ -73,16 +73,31 @@ def inventory_volume(request):
 @permission_classes([IsAuthenticated])
 def inventory_models(request):
     """Unique model names and their counts"""
-    model_counts = Bike.objects.values('model_name').annotate(total=Count('id'))
+    model_counts = Bike.objects.values('model_name').filter(sold=False).annotate(
+        total=Count('id')
+    ).order_by("-total")
 
     return Response({"data": model_counts})
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+def inventory_storages(request):
+    """Products per storage"""
+    storage_counts = Bike.objects.filter(sold=False).values(
+        storage_name=F('storage_place__storage_name') 
+    ).annotate(
+        total=Count('id')
+    ).order_by("-total")
+
+    return Response({"data": storage_counts})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def inventory_brands(request):
     """Unique brands and their counts"""
-    brand_counts = Bike.objects.values('brand').annotate(total=Count('id'))
+    brand_counts = Bike.objects.values('brand').filter(sold=False).annotate(total=Count('id'))
 
     return Response({"data": brand_counts})
 

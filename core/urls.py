@@ -30,6 +30,7 @@ urlpatterns = [
     path("reports/inventory/volume", ReportsView.inventory_volume, name='inventory_volume'),
     path("reports/inventory/brands", ReportsView.inventory_brands, name="brands_report"),
     path("reports/inventory/models", ReportsView.inventory_models, name="models_report"),
+    path("reports/inventory/storages", ReportsView.inventory_storages, name="storages_report"),
 
     path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
