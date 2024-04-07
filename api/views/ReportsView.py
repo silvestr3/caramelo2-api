@@ -20,7 +20,7 @@ def sales_volume(request):
         month=ExtractMonth('sale_date'),
     ).values('year', 'month').annotate(
         total_sales=Count('id'),
-        total_revenue=Sum('total_price'),
+        total_revenue=Sum('total'),
     ).order_by('year', 'month')
 
     monthly_data = list(sales_per_month.values('year', 'month', 'total_sales', 'total_revenue'))
@@ -38,7 +38,7 @@ def sales_payment_method(request):
     """Sales per payment method"""
     sales_by_payment_method = Order.objects.values('payment_method').annotate(
         total_sales=Count('id'),
-        total_revenue=Sum('total_price'),
+        total_revenue=Sum('total'),
     ).order_by('-total_sales')
 
     return Response({"data": sales_by_payment_method})
