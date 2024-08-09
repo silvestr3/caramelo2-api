@@ -7,3 +7,5 @@ from .AdditionalFeeSerializer import AdditionalFeeSerializer
 from .StorageTransferSerializer import StorageTransferSerializer
 from .CustomTokenObtainPairSerializer import CustomTokenObtainPairSerializer
 from .UserSerializer import UserSerializer
+from .GiftSerializer import GiftSerializer
+from .OrderGiftSerializer import OrderGiftSerializer
