@@ -25,4 +25,20 @@ class GiftViewSet(viewsets.ModelViewSet):
         gift.stock += amount
         gift.save()
 
-        return Response({"message": f"Added {amount} to stock. New stock: {gift.stock}"}, status=200)
+        return Response({"message": f"Added {amount} {gift.name}s to stock. New stock: {gift.stock}"}, status=200)
+    
+
+    @action(detail=True, methods=['post'])
+    def update_price(self, request, pk=None):
+        """Change gift price"""
+        gift = get_object_or_404(Gift, pk=pk)
+        try:
+            new_price = int(request.data.get('price'))
+        except (TypeError, ValueError):
+            return Response({"error": "Invalid price"}, status=400)
+        
+        # Update the price of the gift
+        gift.price = new_price
+        gift.save()
+
+        return Response({"message": f"{gift.name} price updated to {new_price}"}, status=200)
