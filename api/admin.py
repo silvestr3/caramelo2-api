@@ -8,6 +8,9 @@ class UserAdmin(admin.ModelAdmin):
 class SalesAdmin(admin.ModelAdmin):
     pass
 
+class UserAdmin(admin.ModelAdmin):
+    pass
 
 
 admin.site.register(Order, SalesAdmin)
+admin.site.register(User, UserAdmin)

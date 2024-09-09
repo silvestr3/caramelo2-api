@@ -5,3 +5,4 @@ from .OrderViewSet import OrderViewSet
 from .CustomerOrdersList import CustomerOrdersList
 from .StorageTransferList import StorageTransferList
 from .UsersViewset import UsersViewset
+from .GiftViewSet import GiftViewSet

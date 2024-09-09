@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from api.serializers import OrderSerializer, CustomerSerializer
-from api.models import Order, Customer, Bike, AdditionalFee
+from api.models import Order, Customer, Bike, AdditionalFee, Gift, OrderGift
 from api.util import convert_number
 from django.utils.timezone import datetime
 from django.shortcuts import get_object_or_404
@@ -130,7 +130,20 @@ class OrderViewSet(viewsets.ModelViewSet):
 
             new_order.additional_fees.add(instance)
             instance.save()
-        
+
+        for gift in request.data['gifts']:
+            gift_instance = Gift.objects.filter(pk=gift['id'])[0]
+            gift_instance.stock -= gift['amount']
+            gift_instance.save()
+
+            order_gift = OrderGift.objects.create(
+                item=gift_instance,
+                quantity=gift["amount"]
+            )
+
+            new_order.gifts.add(order_gift)
+            order_gift.save()
+
         new_order.save()
 
         return Response({"success": True, "data": new_order.id})
