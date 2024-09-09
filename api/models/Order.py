@@ -32,4 +32,4 @@ class Order(models.Model):
     )
     has_checkout = models.BooleanField(default=False)
 
-    gifts = models.ManyToManyField(OrderGift, blank=True)
+    gifts = models.ManyToManyField(OrderGift, blank=True, null=True)
