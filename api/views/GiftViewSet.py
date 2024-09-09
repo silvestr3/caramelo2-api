@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 class GiftViewSet(viewsets.ModelViewSet):
     """Listing all gifts in stock"""
-    queryset = Gift.objects.all()
+    queryset = Gift.objects.all().order_by('name')
     serializer_class = GiftSerializer
     permission_classes = [IsAuthenticated]
     

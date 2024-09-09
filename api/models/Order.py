@@ -3,6 +3,7 @@ from .Customer import Customer
 from .Bike import Bike
 from .AdditionalFee import AdditionalFee
 from .User import User
+from .OrderGift import OrderGift
 
 class Order(models.Model):
     STATUS = [
@@ -30,3 +31,5 @@ class Order(models.Model):
         choices=STATUS
     )
     has_checkout = models.BooleanField(default=False)
+
+    gifts = models.ManyToManyField(OrderGift, blank=True)
